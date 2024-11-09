@@ -11,6 +11,7 @@ import (
 	bistack_stack "github.com/thomaspeugeot/bistack/go/stack"
 	bistack_static "github.com/thomaspeugeot/bistack/go/static"
 
+	otherstack_models "github.com/thomaspeugeot/bistack/otherstack/go/models"
 	otherstack_stack "github.com/thomaspeugeot/bistack/otherstack/go/stack"
 )
 
@@ -59,7 +60,7 @@ func main() {
 		index := 0
 		if foo != nil {
 			for {
-				time.Sleep(2 * time.Second)
+				time.Sleep(4 * time.Second)
 
 				index++
 				if index%2 == 1 {
@@ -97,7 +98,7 @@ func main() {
 		index := 0
 		if foo != nil {
 			for {
-				time.Sleep(2 * time.Second)
+				time.Sleep(4 * time.Second)
 				index++
 				if index%2 == 1 {
 					foo.Name = "Stack 1 Instance 2" + "*"
@@ -109,8 +110,69 @@ func main() {
 		}
 	}()
 
-	otherstack := otherstack_stack.NewStack(r, "otherstack", "stage_stack2_instance1", "", "", *embeddedDiagrams, true)
-	_ = otherstack
+	otherstack_instance1 := otherstack_stack.NewStack(r, otherstack_models.Otherstack_Instance1.ToString(),
+		"stage_stack2_instance1.go", "", "", *embeddedDiagrams, true)
+	_ = otherstack_instance1
+
+	go func() {
+
+		time.Sleep(3 * time.Second)
+
+		// get first element
+		set := (*otherstack_models.GetGongstructInstancesSet[otherstack_models.Bar](otherstack_instance1.Stage))
+		var bar *otherstack_models.Bar
+
+		for key, _ := range set {
+			bar = key
+			break
+		}
+
+		index := 0
+		if bar != nil {
+			for {
+				time.Sleep(4 * time.Second)
+				index++
+				if index%2 == 1 {
+					bar.Name = "Stack 2 Instance 1" + "*"
+				} else {
+					bar.Name = "Stack 2 Instance 1"
+				}
+				otherstack_instance1.Stage.Commit()
+			}
+		}
+	}()
+
+	otherstack_instance2 := otherstack_stack.NewStack(r, otherstack_models.Otherstack_Instance2.ToString(),
+		"stage_stack2_instance1.go", "", "", *embeddedDiagrams, true)
+	_ = otherstack_instance2
+
+	go func() {
+
+		time.Sleep(4 * time.Second)
+
+		// get first element
+		set := (*otherstack_models.GetGongstructInstancesSet[otherstack_models.Bar](otherstack_instance2.Stage))
+		var bar *otherstack_models.Bar
+
+		for key, _ := range set {
+			bar = key
+			break
+		}
+
+		index := 0
+		if bar != nil {
+			for {
+				time.Sleep(4 * time.Second)
+				index++
+				if index%2 == 1 {
+					bar.Name = "Stack 2 Instance 2" + "*"
+				} else {
+					bar.Name = "Stack 2 Instance 2"
+				}
+				otherstack_instance2.Stage.Commit()
+			}
+		}
+	}()
 
 	log.Printf("Server ready serve on localhost:" + strconv.Itoa(*port))
 	err := r.Run(":" + strconv.Itoa(*port))

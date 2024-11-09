@@ -18,3 +18,4 @@ export * from './lib/bar'
 export * from './lib/bar.service'
 
 
+export * from './lib/StacksNames'

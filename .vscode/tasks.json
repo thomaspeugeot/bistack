@@ -58,7 +58,10 @@
 			},
 			"command": "gongc",
 			"group": "build",
-			"args": []
+			"args": [
+				"-skipGoModCommands",
+				"-skipNpmInstall"
+			]
 		},
 		{
 			"label": "01 - gongc otherstack",
@@ -69,6 +72,7 @@
 			"command": "gongc",
 			"group": "build",
 			"args": [
+				"-skipGoModCommands",
 				"-skipNpmInstall"
 			]
 		},
