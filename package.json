@@ -2,6 +2,7 @@
     "name": "bistack",
     "workspaces": [
         "ng-github.com-thomaspeugeot-bistack",
+        "otherstack/ng-github.com-thomaspeugeot-bistack-otherstack",
         "vendor/github.com/fullstack-lang/gongtree/ng-github.com-fullstack-lang-gongtree",
         "vendor/github.com/fullstack-lang/gongsvg/ng-github.com-fullstack-lang-gongsvg",
         "vendor/github.com/fullstack-lang/gongtable/ng-github.com-fullstack-lang-gongtable",
