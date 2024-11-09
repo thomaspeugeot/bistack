@@ -153,7 +153,7 @@ func (backRepoFoo *BackRepoFooStruct) CommitDeleteInstance(id uint) (Error error
 	// foo is not staged anymore, remove fooDB
 	fooDB := backRepoFoo.Map_FooDBID_FooDB[id]
 	db, _ := backRepoFoo.db.Unscoped()
-	_, err := db.Delete(&fooDB)
+	_, err := db.Delete(fooDB)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -213,7 +213,7 @@ func (backRepoFoo *BackRepoFooStruct) CommitPhaseTwoInstance(backRepo *BackRepoS
 		fooDB.CopyBasicFieldsFromFoo(foo)
 
 		// insertion point for translating pointers encodings into actual pointers
-		_, err := backRepoFoo.db.Save(&fooDB)
+		_, err := backRepoFoo.db.Save(fooDB)
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -4,14 +4,19 @@ package orm
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"sync"
 
+	"github.com/thomaspeugeot/bistack/go/db"
 	"github.com/thomaspeugeot/bistack/go/models"
+
+	/* THIS IS REMOVED BY GONG COMPILER IF TARGET IS gorm
 	"github.com/thomaspeugeot/bistack/go/orm/dbgorm"
+	THIS IS REMOVED BY GONG COMPILER IF TARGET IS gorm */
 
 	"github.com/tealeg/xlsx/v3"
 )
@@ -29,14 +34,22 @@ type BackRepoStruct struct {
 
 	// the back repo can broadcast the CommitFromBackNb to all interested subscribers
 	rwMutex     sync.RWMutex
+
+	subscribersRwMutex sync.RWMutex
 	subscribers []chan int
 }
 
 func NewBackRepo(stage *models.StageStruct, filename string) (backRepo *BackRepoStruct) {
 
-	dbWrapper := dbgorm.NewDBWrapper(filename, "github_com_thomaspeugeot_bistack_go",
+	var db db.DBInterface
+
+	db = NewDBLite()
+
+	/* THIS IS REMOVED BY GONG COMPILER IF TARGET IS gorm
+	db = dbgorm.NewDBWrapper(filename, "github_com_thomaspeugeot_bistack_go",
 		&FooDB{},
 	)
+	THIS IS REMOVED BY GONG COMPILER IF TARGET IS gorm */
 
 	backRepo = new(BackRepoStruct)
 
@@ -46,7 +59,7 @@ func NewBackRepo(stage *models.StageStruct, filename string) (backRepo *BackRepo
 		Map_FooDBID_FooDB:  make(map[uint]*FooDB, 0),
 		Map_FooPtr_FooDBID: make(map[*models.Foo]uint, 0),
 
-		db:    dbWrapper,
+		db:    db,
 		stage: stage,
 	}
 
@@ -96,6 +109,11 @@ func (backRepo *BackRepoStruct) IncrementPushFromFrontNb() uint {
 
 // Commit the BackRepoStruct inner variables and link to the database
 func (backRepo *BackRepoStruct) Commit(stage *models.StageStruct) {
+
+	// forbid read of back repo during commit
+	backRepo.rwMutex.Lock()
+	defer backRepo.rwMutex.Unlock()
+
 	// insertion point for per struct back repo phase one commit
 	backRepo.BackRepoFoo.CommitPhaseOne(stage)
 
@@ -196,30 +214,48 @@ func (backRepo *BackRepoStruct) RestoreXL(stage *models.StageStruct, dirPath str
 	backRepo.stage.Commit()
 }
 
-func (backRepoStruct *BackRepoStruct) SubscribeToCommitNb() <-chan int {
-	backRepoStruct.rwMutex.Lock()
-	defer backRepoStruct.rwMutex.Unlock()
-
+func (backRepoStruct *BackRepoStruct) SubscribeToCommitNb(ctx context.Context) <-chan int {
 	ch := make(chan int)
+
+	backRepoStruct.subscribersRwMutex.Lock()
 	backRepoStruct.subscribers = append(backRepoStruct.subscribers, ch)
+	backRepoStruct.subscribersRwMutex.Unlock()
+
+	// Goroutine to remove subscriber when context is done
+	go func() {
+		<-ctx.Done()
+		backRepoStruct.unsubscribe(ch)
+	}()
 	return ch
 }
 
-func (backRepoStruct *BackRepoStruct) broadcastNbCommitToBack() {
-	backRepoStruct.rwMutex.RLock()
-	defer backRepoStruct.rwMutex.RUnlock()
-
-	activeChannels := make([]chan int, 0)
-
-	for _, ch := range backRepoStruct.subscribers {
-		select {
-		case ch <- int(backRepoStruct.CommitFromBackNb):
-			activeChannels = append(activeChannels, ch)
-		default:
-			// Assume channel is no longer active; don't add to activeChannels
-			log.Println("Channel no longer active")
-			close(ch)
+// unsubscribe removes a subscriber's channel from the subscribers slice.
+func (backRepoStruct *BackRepoStruct) unsubscribe(ch chan int) {
+	backRepoStruct.subscribersRwMutex.Lock()
+	defer backRepoStruct.subscribersRwMutex.Unlock()
+	for i, subscriber := range backRepoStruct.subscribers {
+		if subscriber == ch {
+			backRepoStruct.subscribers =
+				append(backRepoStruct.subscribers[:i],
+					backRepoStruct.subscribers[i+1:]...)
+			close(ch) // Close the channel to signal completion
+			break
 		}
 	}
-	backRepoStruct.subscribers = activeChannels
+}
+
+func (backRepoStruct *BackRepoStruct) broadcastNbCommitToBack() {
+	backRepoStruct.subscribersRwMutex.RLock()
+	subscribers := make([]chan int, len(backRepoStruct.subscribers))
+	copy(subscribers, backRepoStruct.subscribers)
+	backRepoStruct.subscribersRwMutex.RUnlock()
+
+	for _, ch := range subscribers {
+		select {
+		case ch <- int(backRepoStruct.CommitFromBackNb):
+			// Successfully sent commit from back
+		default:
+			// Subscriber is not ready to receive; skip to avoid blocking
+		}
+	}
 }
