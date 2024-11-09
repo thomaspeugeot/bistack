@@ -5,6 +5,7 @@ import (
 	"log"
 	"strconv"
 
+	bistack_models "github.com/thomaspeugeot/bistack/go/models"
 	bistack_stack "github.com/thomaspeugeot/bistack/go/stack"
 	bistack_static "github.com/thomaspeugeot/bistack/go/static"
 )
@@ -33,7 +34,8 @@ func main() {
 	r := bistack_static.ServeStaticFiles(*logGINFlag)
 
 	// setup stack
-	stack := bistack_stack.NewStack(r, "bistack", *unmarshallFromCode, *marshallOnCommit, "", *embeddedDiagrams, true)
+	stack := bistack_stack.NewStack(r, bistack_models.Bistack.ToString(),
+		*unmarshallFromCode, *marshallOnCommit, "", *embeddedDiagrams, true)
 	stack.Probe.Refresh()
 
 	log.Printf("Server ready serve on localhost:" + strconv.Itoa(*port))
