@@ -51,10 +51,9 @@ import { GongsvgDiagrammingComponent } from '@vendored_components/github.com/ful
 export class AppComponent implements OnInit {
 
   bistack = 'Bistack'
-  probe = 'Bistack Data/Model'
   view = this.bistack
 
-  views: string[] = [this.bistack, this.probe];
+  views: string[] = [this.bistack];
 
   scrollStyle = {
     'overflow- x': 'auto',
