@@ -61,6 +61,18 @@
 			"args": []
 		},
 		{
+			"label": "01 - gongc otherstack",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/otherstack/go/models"
+			},
+			"command": "gongc",
+			"group": "build",
+			"args": [
+				"-skipNpmInstall"
+			]
+		},
+		{
 			"label": "01 - gongc bistack -skipNg",
 			"type": "shell",
 			"options": {

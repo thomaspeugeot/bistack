@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AngularSplitModule } from 'angular-split';
 
 import * as bistack from '../../projects/bistack/src/public-api'
+import * as otherstack from '../../../otherstack/ng-github.com-thomaspeugeot-bistack-otherstack/projects/otherstack/src/public-api'
 
 import { BistackspecificComponent } from '../../projects/bistackspecific/src/public-api'
 

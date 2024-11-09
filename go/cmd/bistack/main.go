@@ -10,6 +10,8 @@ import (
 	bistack_models "github.com/thomaspeugeot/bistack/go/models"
 	bistack_stack "github.com/thomaspeugeot/bistack/go/stack"
 	bistack_static "github.com/thomaspeugeot/bistack/go/static"
+
+	otherstack_stack "github.com/thomaspeugeot/bistack/otherstack/go/stack"
 )
 
 var (
@@ -106,6 +108,9 @@ func main() {
 			}
 		}
 	}()
+
+	otherstack := otherstack_stack.NewStack(r, "otherstack", "stage_stack2_instance1", "", "", *embeddedDiagrams, true)
+	_ = otherstack
 
 	log.Printf("Server ready serve on localhost:" + strconv.Itoa(*port))
 	err := r.Run(":" + strconv.Itoa(*port))
