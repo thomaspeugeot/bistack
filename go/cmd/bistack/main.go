@@ -37,7 +37,7 @@ func main() {
 
 	// setup stack1Instance1
 	stack1Instance1 := bistack_stack.NewStack(r, bistack_models.Bistack_Stack1_Instance1.ToString(),
-		"stage_stack1_instance1.go", "", "", *embeddedDiagrams, false)
+		"stage_stack1_instance1.go", "", "", *embeddedDiagrams, false).Stage
 
 	// A routine that, every 5 seconds,
 	// - flips the name of the "Foo 1" instance between "Foo 1" and "Foo 1*"
@@ -49,7 +49,7 @@ func main() {
 		time.Sleep(1 * time.Second)
 
 		// get first element
-		set := (*models.GetGongstructInstancesSet[models.Foo](stack1Instance1.Stage))
+		set := (*models.GetGongstructInstancesSet[models.Foo](stack1Instance1))
 		var foo *models.Foo
 
 		for key, _ := range set {
@@ -68,14 +68,14 @@ func main() {
 				} else {
 					foo.Name = "Stack 1 Instance 1"
 				}
-				stack1Instance1.Stage.Commit()
+				stack1Instance1.Commit()
 			}
 		}
 	}()
 
 	// setup stack1Instance2
 	stack1Instance2 := bistack_stack.NewStack(r, bistack_models.Bistack_Stack1_Instance2.ToString(),
-		"stage_stack1_instance2.go", "", "", *embeddedDiagrams, false)
+		"stage_stack1_instance2.go", "", "", *embeddedDiagrams, false).Stage
 
 	// A routine that, every 5 seconds,
 	// - flips the name of the "Foo 1" instance between "Foo 1" and "Foo 1*"
@@ -87,7 +87,7 @@ func main() {
 		time.Sleep(2 * time.Second)
 
 		// get first element
-		set := (*models.GetGongstructInstancesSet[models.Foo](stack1Instance2.Stage))
+		set := (*models.GetGongstructInstancesSet[models.Foo](stack1Instance2))
 		var foo *models.Foo
 
 		for key, _ := range set {
@@ -105,13 +105,13 @@ func main() {
 				} else {
 					foo.Name = "Stack 1 Instance 2"
 				}
-				stack1Instance2.Stage.Commit()
+				stack1Instance2.Commit()
 			}
 		}
 	}()
 
 	otherstack_instance1 := otherstack_stack.NewStack(r, otherstack_models.Otherstack_Instance1.ToString(),
-		"stage_stack2_instance1.go", "", "", *embeddedDiagrams, true)
+		"stage_stack2_instance1.go", "", "", *embeddedDiagrams, true).Stage
 	_ = otherstack_instance1
 
 	go func() {
@@ -119,7 +119,7 @@ func main() {
 		time.Sleep(3 * time.Second)
 
 		// get first element
-		set := (*otherstack_models.GetGongstructInstancesSet[otherstack_models.Bar](otherstack_instance1.Stage))
+		set := (*otherstack_models.GetGongstructInstancesSet[otherstack_models.Bar](otherstack_instance1))
 		var bar *otherstack_models.Bar
 
 		for key, _ := range set {
@@ -137,27 +137,43 @@ func main() {
 				} else {
 					bar.Name = "Stack 2 Instance 1"
 				}
-				otherstack_instance1.Stage.Commit()
+				otherstack_instance1.Commit()
 			}
 		}
 	}()
 
-	otherstack_instance2 := otherstack_stack.NewStack(r, otherstack_models.Otherstack_Instance2.ToString(),
-		"stage_stack2_instance1.go", "", "", *embeddedDiagrams, true)
-	_ = otherstack_instance2
-
-	go func() {
-
-		time.Sleep(4 * time.Second)
-
+	{
+		otherstack_instance2 := otherstack_stack.NewStack(r, otherstack_models.Otherstack_Instance2.ToString(),
+			"stage_stack2_instance1.go", "", "", *embeddedDiagrams, true).Stage
+		_ = otherstack_instance2
+		displayName := "Stack 2 Instance 2"
+		initialDelay := 4 * time.Second
 		// get first element
-		set := (*otherstack_models.GetGongstructInstancesSet[otherstack_models.Bar](otherstack_instance2.Stage))
-		var bar *otherstack_models.Bar
+		set := (*otherstack_models.GetGongstructInstancesSet[otherstack_models.Bar](otherstack_instance2))
 
-		for key, _ := range set {
+		var bar NamedStruct
+		for key := range set {
 			bar = key
 			break
 		}
+
+		updateNameBeat(initialDelay, bar, displayName, otherstack_instance2)
+	}
+
+	log.Printf("Server ready serve on localhost:" + strconv.Itoa(*port))
+	err := r.Run(":" + strconv.Itoa(*port))
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+}
+
+type NamedStruct interface {
+	SetName(name string)
+}
+
+func updateNameBeat(initialDelay time.Duration, bar NamedStruct, displayName string, stage *otherstack_models.StageStruct) {
+	go func() {
+		time.Sleep(initialDelay)
 
 		index := 0
 		if bar != nil {
@@ -165,18 +181,12 @@ func main() {
 				time.Sleep(4 * time.Second)
 				index++
 				if index%2 == 1 {
-					bar.Name = "Stack 2 Instance 2" + "*"
+					bar.SetName(displayName + "*")
 				} else {
-					bar.Name = "Stack 2 Instance 2"
+					bar.SetName(displayName)
 				}
-				otherstack_instance2.Stage.Commit()
+				stage.Commit()
 			}
 		}
 	}()
-
-	log.Printf("Server ready serve on localhost:" + strconv.Itoa(*port))
-	err := r.Run(":" + strconv.Itoa(*port))
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
 }
