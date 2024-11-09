@@ -52,11 +52,6 @@ export class AppComponent implements OnInit {
 
   StacksNames = bistack.StacksNames
 
-  bistack = 'Bistack'
-  view = this.bistack
-
-  views: string[] = [this.bistack];
-
   scrollStyle = {
     'overflow- x': 'auto',
     'width': '100%',  // Ensure the div takes the full width of its parent container

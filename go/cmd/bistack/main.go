@@ -15,9 +15,6 @@ import (
 var (
 	logGINFlag = flag.Bool("logGIN", false, "log mode for gin")
 
-	unmarshallFromCode = flag.String("unmarshallFromCode", "", "unmarshall data from go file and '.go' (must be lowercased without spaces), If unmarshallFromCode arg is '', no unmarshalling")
-	marshallOnCommit   = flag.String("marshallOnCommit", "", "on all commits, marshall staged data to a go file with the marshall name and '.go' (must be lowercased without spaces). If marshall arg is '', no marshalling")
-
 	diagrams         = flag.Bool("diagrams", true, "parse/analysis go/models and go/diagrams")
 	embeddedDiagrams = flag.Bool("embeddedDiagrams", false, "parse/analysis go/models and go/embeddedDiagrams")
 
@@ -35,11 +32,10 @@ func main() {
 	// setup the static file server and get the controller
 	r := bistack_static.ServeStaticFiles(*logGINFlag)
 
-	// setup stack
-	stack := bistack_stack.NewStack(r, bistack_models.Bistack_Stack1_Instance1.ToString(),
-		*unmarshallFromCode, *marshallOnCommit, "", *embeddedDiagrams, false)
+	// setup stack1Instance1
+	stack1Instance1 := bistack_stack.NewStack(r, bistack_models.Bistack_Stack1_Instance1.ToString(),
+		"stage_stack1_instance1.go", "", "", *embeddedDiagrams, false)
 
-	stage := stack.Stage
 	// A routine that, every 5 seconds,
 	// - flips the name of the "Foo 1" instance between "Foo 1" and "Foo 1*"
 	// - commit the stage
@@ -47,13 +43,13 @@ func main() {
 	// This to demonstrate the websocket function of the front
 	go func() {
 
-		time.Sleep(3 * time.Second)
+		time.Sleep(1 * time.Second)
 
 		// get first element
-		set_A := (*models.GetGongstructInstancesSet[models.Foo](stage))
+		set := (*models.GetGongstructInstancesSet[models.Foo](stack1Instance1.Stage))
 		var foo *models.Foo
 
-		for key, _ := range set_A {
+		for key, _ := range set {
 			foo = key
 			break
 		}
@@ -61,18 +57,54 @@ func main() {
 		index := 0
 		if foo != nil {
 			for {
-				time.Sleep(5 * time.Second)
-				stage.Checkout()
+				time.Sleep(2 * time.Second)
+
 				index++
 				if index%2 == 1 {
-					foo.Name = foo.Name + "*"
+					foo.Name = "Stack 1 Instance 1" + "*"
 				} else {
-					foo.Name = "Foo 1"
+					foo.Name = "Stack 1 Instance 1"
 				}
-				stage.Commit()
+				stack1Instance1.Stage.Commit()
 			}
 		}
+	}()
 
+	// setup stack1Instance2
+	stack1Instance2 := bistack_stack.NewStack(r, bistack_models.Bistack_Stack1_Instance2.ToString(),
+		"stage_stack1_instance2.go", "", "", *embeddedDiagrams, false)
+
+	// A routine that, every 5 seconds,
+	// - flips the name of the "Foo 1" instance between "Foo 1" and "Foo 1*"
+	// - commit the stage
+	//
+	// This to demonstrate the websocket function of the front
+	go func() {
+
+		time.Sleep(2 * time.Second)
+
+		// get first element
+		set := (*models.GetGongstructInstancesSet[models.Foo](stack1Instance2.Stage))
+		var foo *models.Foo
+
+		for key, _ := range set {
+			foo = key
+			break
+		}
+
+		index := 0
+		if foo != nil {
+			for {
+				time.Sleep(2 * time.Second)
+				index++
+				if index%2 == 1 {
+					foo.Name = "Stack 1 Instance 2" + "*"
+				} else {
+					foo.Name = "Stack 1 Instance 2"
+				}
+				stack1Instance2.Stage.Commit()
+			}
+		}
 	}()
 
 	log.Printf("Server ready serve on localhost:" + strconv.Itoa(*port))

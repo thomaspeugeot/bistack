@@ -2,6 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/ng-github.com-thomaspeugeot-bistack"
+        },
+        {
             "name": "Launch Edge",
             "request": "launch",
             "type": "msedge",
@@ -9,22 +16,12 @@
             "webRoot": "${workspaceFolder}/ng-github.com-thomaspeugeot-bistack"
         },
         {
-            "name": "Launch Chrome",
-            "request": "launch",
-            "type": "chrome",
-            "url": "http://localhost:4200",
-            "webRoot": "${workspaceFolder}/ng-github.com-thomaspeugeot-bistack"
-        },
-        {
-            "name": "go server -unmarshallFromCode=stage.go -marshallOnCommit=stage",
+            "name": "go server",
             "type": "go",
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceFolder}/go/cmd/bistack",
-            "args": [
-                "-unmarshallFromCode=stage.go",
-                "-marshallOnCommit=stage"
-            ]
+            "args": []
         },
     ]
 }

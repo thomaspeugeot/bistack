@@ -232,9 +232,11 @@ export class FrontRepoService {
 
 		return new Observable(observer => {
 			this.socket!.onmessage = event => {
-				let _this = this
+
 
 				const backRepoData = new BackRepoData(JSON.parse(event.data))
+
+				let frontRepo = new (FrontRepo)
 
 				// 
 				// First Step: init map of instances
@@ -242,14 +244,14 @@ export class FrontRepoService {
 				// init the arrays
 				// insertion point sub template for init 
 				// init the arrays
-				this.frontRepo.array_Foos = []
-				this.frontRepo.map_ID_Foo.clear()
+				frontRepo.array_Foos = []
+				frontRepo.map_ID_Foo.clear()
 
 				backRepoData.FooAPIs.forEach(
 					fooAPI => {
 						let foo = new Foo
-						this.frontRepo.array_Foos.push(foo)
-						this.frontRepo.map_ID_Foo.set(fooAPI.ID, foo)
+						frontRepo.array_Foos.push(foo)
+						frontRepo.map_ID_Foo.set(fooAPI.ID, foo)
 					}
 				)
 
@@ -262,14 +264,14 @@ export class FrontRepoService {
 				// fill up front objects
 				backRepoData.FooAPIs.forEach(
 					fooAPI => {
-						let foo = this.frontRepo.map_ID_Foo.get(fooAPI.ID)
-						CopyFooAPIToFoo(fooAPI, foo!, this.frontRepo)
+						let foo = frontRepo.map_ID_Foo.get(fooAPI.ID)
+						CopyFooAPIToFoo(fooAPI, foo!, frontRepo)
 					}
 				)
 
 
 
-				observer.next(this.frontRepo)
+				observer.next(frontRepo)
 			}
 			this.socket!.onerror = event => {
 				observer.error(event)

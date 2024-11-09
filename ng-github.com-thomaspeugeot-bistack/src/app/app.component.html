@@ -1,10 +1,16 @@
 
-<as-split unit="pixel" *ngIf="view==bistack" direction="vertical">
+<as-split direction="vertical">
 
-    <as-split-area [size]="400">
+    <as-split-area [size]="10">
         <lib-bistackspecific [StackInstanceName]="StacksNames.Bistack_Stack1_Instance1">
         </lib-bistackspecific>
     </as-split-area>
 
+    <as-split-area [size]="10">
+        <lib-bistackspecific [StackInstanceName]="StacksNames.Bistack_Stack1_Instance2">
+        </lib-bistackspecific>
+    </as-split-area>
+    <as-split-area [size]="80">
+    </as-split-area>
 </as-split>
 

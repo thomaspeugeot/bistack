@@ -20,26 +20,19 @@ export class BistackspecificComponent implements OnInit {
 
   constructor(
     private frontRepoService: bistack.FrontRepoService,
-
-    private fooService: bistack.FooService,
-
   ) { }
 
   ngOnInit(): void {
 
-    this.fooService.getFoos(this.StackInstanceName, this.frontRepo).subscribe(
-      foos => {
-        this.frontRepo.array_Foos = foos
-      }
-    )
-
     this.frontRepoService.connectToWebSocket(this.StackInstanceName).subscribe(
-      gongtablesFrontRepo => {
-        this.frontRepo = gongtablesFrontRepo
+      frontRepo => {
+        this.frontRepo = frontRepo
+        console.log(this.StackInstanceName, "received web socket update", this.frontRepo.array_Foos[0].Name)
+
       }
     )
 
-    console.log("ngOnInit")
+    console.log("ngOnInit", this.StackInstanceName)
   }
 
 }
