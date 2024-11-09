@@ -10,7 +10,7 @@ func (stacksnames StacksNames) ToString() (res string) {
 	// migration of former implementation of enum
 	switch stacksnames {
 	// insertion code per enum code
-	case Bistack:
+	case Bistack_Stack1_Instance1:
 		res = "bistack"
 	}
 	return
@@ -21,7 +21,7 @@ func (stacksnames *StacksNames) FromString(input string) (err error) {
 	switch input {
 	// insertion code per enum code
 	case "bistack":
-		*stacksnames = Bistack
+		*stacksnames = Bistack_Stack1_Instance1
 		return
 	default:
 		return errUnkownEnum
@@ -32,8 +32,8 @@ func (stacksnames *StacksNames) FromCodeString(input string) (err error) {
 
 	switch input {
 	// insertion code per enum code
-	case "Bistack":
-		*stacksnames = Bistack
+	case "Bistack_Stack1_Instance1":
+		*stacksnames = Bistack_Stack1_Instance1
 	default:
 		return errUnkownEnum
 	}
@@ -44,8 +44,8 @@ func (stacksnames *StacksNames) ToCodeString() (res string) {
 
 	switch *stacksnames {
 	// insertion code per enum code
-	case Bistack:
-		res = "Bistack"
+	case Bistack_Stack1_Instance1:
+		res = "Bistack_Stack1_Instance1"
 	}
 	return
 }
@@ -55,7 +55,7 @@ func (stacksnames StacksNames) Codes() (res []string) {
 	res = make([]string, 0)
 
 	// insertion code per enum code
-	res = append(res, "Bistack")
+	res = append(res, "Bistack_Stack1_Instance1")
 
 	return
 }

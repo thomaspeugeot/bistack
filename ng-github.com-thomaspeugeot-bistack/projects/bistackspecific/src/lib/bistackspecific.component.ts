@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import * as bistack from '../../../bistack/src/public-api'
 import { MatTableModule } from '@angular/material/table';
@@ -12,9 +12,9 @@ import { MatTableModule } from '@angular/material/table';
   templateUrl: './bistackspecific.component.html',
   styles: ``
 })
-export class BistackspecificComponent {
+export class BistackspecificComponent implements OnInit {
 
-  StacksNames = bistack.StacksNames
+  @Input() StackInstanceName: string = ""
 
   public frontRepo = new (bistack.FrontRepo)
 
@@ -27,13 +27,13 @@ export class BistackspecificComponent {
 
   ngOnInit(): void {
 
-    this.fooService.getFoos(this.StacksNames.Bistack, this.frontRepo).subscribe(
+    this.fooService.getFoos(this.StackInstanceName, this.frontRepo).subscribe(
       foos => {
         this.frontRepo.array_Foos = foos
       }
     )
 
-    this.frontRepoService.connectToWebSocket(this.StacksNames.Bistack).subscribe(
+    this.frontRepoService.connectToWebSocket(this.StackInstanceName).subscribe(
       gongtablesFrontRepo => {
         this.frontRepo = gongtablesFrontRepo
       }

@@ -36,7 +36,7 @@ func main() {
 	r := bistack_static.ServeStaticFiles(*logGINFlag)
 
 	// setup stack
-	stack := bistack_stack.NewStack(r, bistack_models.Bistack.ToString(),
+	stack := bistack_stack.NewStack(r, bistack_models.Bistack_Stack1_Instance1.ToString(),
 		*unmarshallFromCode, *marshallOnCommit, "", *embeddedDiagrams, false)
 
 	stage := stack.Stage
@@ -47,7 +47,7 @@ func main() {
 	// This to demonstrate the websocket function of the front
 	go func() {
 
-		time.Sleep(5 * time.Second)
+		time.Sleep(3 * time.Second)
 
 		// get first element
 		set_A := (*models.GetGongstructInstancesSet[models.Foo](stage))

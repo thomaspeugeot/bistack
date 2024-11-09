@@ -1,7 +1,7 @@
 // generated from ng_file_enum.ts.go
 export enum StacksNames {
 	// insertion point	
-	Bistack = "bistack",
+	Bistack_Stack1_Instance1 = "bistack",
 }
 
 export interface StacksNamesSelect {
@@ -10,5 +10,5 @@ export interface StacksNamesSelect {
 }
 
 export const StacksNamesList: StacksNamesSelect[] = [ // insertion point	
-	{ value: StacksNames.Bistack, viewValue: "bistack" },
+	{ value: StacksNames.Bistack_Stack1_Instance1, viewValue: "bistack" },
 ];

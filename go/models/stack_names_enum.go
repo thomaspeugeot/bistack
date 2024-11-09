@@ -3,5 +3,5 @@ package models
 type StacksNames string
 
 const (
-	Bistack StacksNames = "bistack"
+	Bistack_Stack1_Instance1 StacksNames = "bistack"
 )

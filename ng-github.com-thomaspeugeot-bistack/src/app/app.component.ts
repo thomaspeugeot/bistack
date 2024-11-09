@@ -50,6 +50,8 @@ import { GongsvgDiagrammingComponent } from '@vendored_components/github.com/ful
 })
 export class AppComponent implements OnInit {
 
+  StacksNames = bistack.StacksNames
+
   bistack = 'Bistack'
   view = this.bistack
 
