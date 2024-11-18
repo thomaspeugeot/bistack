@@ -1,10 +1,10 @@
-# bistack
+# bistack, a demo of micro stack architecture
 
 gong playground for 4 stack instances with websocket update:
 
-- 2 instances of stack "bistack"
-- 2 instances of stack "otherstack"
+2 stacks ("bistack" & "other stack) x 2 instances per stack X 2 clients
 
+![alt text](image.png)
 
 ```
 git clone https://github.com/thomaspeugeot/bistack.git
