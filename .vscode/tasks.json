@@ -51,7 +51,7 @@
 			"problemMatcher": []
 		},
 		{
-			"label": "01 - gongc bistack",
+			"label": "01 - gongc bistack -skipGoModCommands -skipNpmInstall",
 			"type": "shell",
 			"options": {
 				"cwd": "${workspaceFolder}/go/models"

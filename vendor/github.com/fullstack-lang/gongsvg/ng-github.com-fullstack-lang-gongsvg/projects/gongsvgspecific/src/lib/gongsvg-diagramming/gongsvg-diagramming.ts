@@ -33,6 +33,7 @@ import { auto_Y_offset } from './auto-y-offset';
 import { drawLineFromRectToB } from '../draw.line.from.rect.to.point';
 import { LinkSegmentsPipe } from '../link-segments.pipe'
 
+import { formatSVG, processSVG } from '../cleanandresizesvg'
 
 @Component({
   selector: 'lib-gongsvg-diagramming',
@@ -51,6 +52,9 @@ import { LinkSegmentsPipe } from '../link-segments.pipe'
   standalone: true,
 })
 export class GongsvgDiagrammingComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  @ViewChild('svgContainer', { static: true })
+  private svgContainer!: ElementRef<SVGSVGElement>
 
   @Input() GONG__StackPath: string = ""
 
@@ -131,7 +135,7 @@ export class GongsvgDiagrammingComponent implements OnInit, OnDestroy, AfterView
   }
 
   resetAllLinksPreviousStartEndRects() {
-    console.log(getFunctionName())
+
     for (let link of this.gongsvgFrontRepo?.getFrontArray<gongsvg.Link>(gongsvg.Link.GONGSTRUCT_NAME)!) {
       // TODO : why do we need to store the previous thing
       // one remived the srture clone call
@@ -301,6 +305,9 @@ export class GongsvgDiagrammingComponent implements OnInit, OnDestroy, AfterView
 
         this.resetAllLinksPreviousStartEndRects()
 
+        // Reset all animations
+        this.resetAnimationsProgrammatically()
+
         // Manually trigger change detection
         this.changeDetectorRef.detectChanges()
 
@@ -308,6 +315,30 @@ export class GongsvgDiagrammingComponent implements OnInit, OnDestroy, AfterView
           "in promise to front repose servive pull", "gongsvgFrontRepo not good")
       }
     )
+  }
+
+  private resetAnimationsProgrammatically() {
+    const allAnimateElements = this.svgContainer.nativeElement.querySelectorAll('animate');
+
+    allAnimateElements.forEach((animateEl: SVGAnimateElement) => {
+
+      console.log("animate modif")
+
+      const parentElement = animateEl.parentElement;
+      const attributeName = animateEl.getAttribute('attributeName');
+      const fromValue = animateEl.getAttribute('from');
+
+      if (parentElement && attributeName && fromValue) {
+        // Reset to initial value
+        parentElement.setAttribute(attributeName, fromValue);
+
+        console.log("reseted")
+        animateEl.beginElement()
+
+        // Force a reflow to ensure reset
+        void parentElement.offsetWidth;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -916,4 +947,34 @@ export class GongsvgDiagrammingComponent implements OnInit, OnDestroy, AfterView
 
     return coordinate
   }
+
+  downloadSVG() {
+    const svgElement = this.svgContainer.nativeElement;
+    const serializer = new XMLSerializer();
+    const svgData = serializer.serializeToString(svgElement);
+
+
+
+    let withoutComments = svgData.replace(/<!--[\s\S]*?-->/g, '')
+
+    let res = withoutComments.replace(/<!--[\s\S]*?-->/g, '')
+      // Remove Angular generated attributes (including the equals and quotes)
+      .replace(/\s+_ngcontent-[^="]*=""/g, '')
+      .replace(/\s+_nghost-[^="]*=""/g, '');
+
+
+    let svg2 = processSVG(res)
+    let svg3 = formatSVG(svg2)
+    const blob = new Blob([svg3], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = this.svg.Name + ".svg";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
 }

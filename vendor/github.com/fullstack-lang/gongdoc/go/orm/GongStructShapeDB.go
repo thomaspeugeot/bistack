@@ -422,11 +422,27 @@ func (backRepoGongStructShape *BackRepoGongStructShapeStruct) CheckoutPhaseTwoIn
 func (gongstructshapeDB *GongStructShapeDB) DecodePointers(backRepo *BackRepoStruct, gongstructshape *models.GongStructShape) {
 
 	// insertion point for checkout of pointer encoding
-	// Position field
-	gongstructshape.Position = nil
-	if gongstructshapeDB.PositionID.Int64 != 0 {
-		gongstructshape.Position = backRepo.BackRepoPosition.Map_PositionDBID_PositionPtr[uint(gongstructshapeDB.PositionID.Int64)]
+	// Position field	
+	{
+		id := gongstructshapeDB.PositionID.Int64
+		if id != 0 {
+			tmp, ok := backRepo.BackRepoPosition.Map_PositionDBID_PositionPtr[uint(id)]
+
+			// if the pointer id is unknown, it is not a problem, maybe the target was removed from the front
+			if !ok {
+				log.Println("DecodePointers: gongstructshape.Position, unknown pointer id", id)
+				gongstructshape.Position = nil
+			} else {
+				// updates only if field has changed
+				if gongstructshape.Position == nil || gongstructshape.Position != tmp {
+					gongstructshape.Position = tmp
+				}
+			}
+		} else {
+			gongstructshape.Position = nil
+		}
 	}
+	
 	// This loop redeem gongstructshape.Fields in the stage from the encode in the back repo
 	// It parses all FieldDB in the back repo and if the reverse pointer encoding matches the back repo ID
 	// it appends the stage instance
