@@ -22,6 +22,8 @@ export class BistackspecificComponent implements OnInit {
     private frontRepoService: bistack.FrontRepoService,
   ) { }
 
+  StackType = bistack.StackType
+
   ngOnInit(): void {
 
     this.frontRepoService.connectToWebSocket(this.StackInstanceName).subscribe(

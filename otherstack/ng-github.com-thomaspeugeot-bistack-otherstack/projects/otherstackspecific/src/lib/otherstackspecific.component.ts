@@ -20,6 +20,8 @@ export class OtherstackspecificComponent implements OnInit {
 
   public frontRepo = new (otherstack.FrontRepo)
 
+  StackType = otherstack.StackType
+
   constructor(
     private frontRepoService: otherstack.FrontRepoService,
   ) { }
