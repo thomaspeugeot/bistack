@@ -6,13 +6,12 @@ import * as otherstack from '../../../otherstack/src/public-api'
 import { MatTableModule } from '@angular/material/table';
 
 @Component({
-  selector: 'lib-otherstackspecific',
-  standalone: true,
-  imports: [
-    MatTableModule
-  ],
-  templateUrl: "otherstackspecific.component.html",
-  styles: ``
+    selector: 'lib-otherstackspecific',
+    imports: [
+        MatTableModule
+    ],
+    templateUrl: "otherstackspecific.component.html",
+    styles: ``
 })
 export class OtherstackspecificComponent implements OnInit {
 

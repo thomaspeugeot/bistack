@@ -4,13 +4,12 @@ import * as bistack from '../../../bistack/src/public-api'
 import { MatTableModule } from '@angular/material/table';
 
 @Component({
-  selector: 'lib-bistackspecific',
-  standalone: true,
-  imports: [
-    MatTableModule
-  ],
-  templateUrl: './bistackspecific.component.html',
-  styles: ``
+    selector: 'lib-bistackspecific',
+    imports: [
+        MatTableModule
+    ],
+    templateUrl: './bistackspecific.component.html',
+    styles: ``
 })
 export class BistackspecificComponent implements OnInit {
 

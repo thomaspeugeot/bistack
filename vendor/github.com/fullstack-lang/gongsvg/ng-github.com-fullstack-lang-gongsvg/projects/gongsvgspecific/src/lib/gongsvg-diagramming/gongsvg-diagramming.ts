@@ -36,20 +36,16 @@ import { LinkSegmentsPipe } from '../link-segments.pipe'
 import { formatSVG, processSVG } from '../cleanandresizesvg'
 
 @Component({
-  selector: 'lib-gongsvg-diagramming',
-  templateUrl: './gongsvg-diagramming.html',
-  styleUrls: ['./gongsvg-diagramming.css'],
-  imports: [
-    CommonModule,
-
-    MatIconModule,
-    MatButtonModule,
-
-    TextWidthCalculatorComponent,
-
-    LinkSegmentsPipe,
-  ],
-  standalone: true,
+    selector: 'lib-gongsvg-diagramming',
+    templateUrl: './gongsvg-diagramming.html',
+    styleUrls: ['./gongsvg-diagramming.css'],
+    imports: [
+        CommonModule,
+        MatIconModule,
+        MatButtonModule,
+        TextWidthCalculatorComponent,
+        LinkSegmentsPipe,
+    ]
 })
 export class GongsvgDiagrammingComponent implements OnInit, OnDestroy, AfterViewInit {
 
@@ -227,6 +223,7 @@ export class GongsvgDiagrammingComponent implements OnInit, OnDestroy, AfterView
     private linkService: gongsvg.LinkService,
     private anchoredTextService: gongsvg.LinkAnchoredTextService,
     private rectAnchoredPathService: gongsvg.RectAnchoredPathService,
+    private svgTextService: gongsvg.SvgTextService,
 
     private changeDetectorRef: ChangeDetectorRef,
   ) { }
@@ -310,6 +307,10 @@ export class GongsvgDiagrammingComponent implements OnInit, OnDestroy, AfterView
 
         // Manually trigger change detection
         this.changeDetectorRef.detectChanges()
+
+        if (this.svg.IsSVGFileGenerated) {
+          this.downloadSVG()
+        }
 
         console.assert(this.gongsvgFrontRepo?.getFrontArray(gongsvg.SVG.GONGSTRUCT_NAME).length == 1,
           "in promise to front repose servive pull", "gongsvgFrontRepo not good")
@@ -949,32 +950,66 @@ export class GongsvgDiagrammingComponent implements OnInit, OnDestroy, AfterView
   }
 
   downloadSVG() {
+    // Retrieve the native SVG element through the ViewChild/ElementRef
     const svgElement = this.svgContainer.nativeElement;
+  
+    // Create a serializer to convert the SVG DOM node to a string
     const serializer = new XMLSerializer();
+    
+    // Serialize the SVG element
     const svgData = serializer.serializeToString(svgElement);
-
-
-
-    let withoutComments = svgData.replace(/<!--[\s\S]*?-->/g, '')
-
-    let res = withoutComments.replace(/<!--[\s\S]*?-->/g, '')
-      // Remove Angular generated attributes (including the equals and quotes)
-      .replace(/\s+_ngcontent-[^="]*=""/g, '')
-      .replace(/\s+_nghost-[^="]*=""/g, '');
-
-
-    let svg2 = processSVG(res)
-    let svg3 = formatSVG(svg2)
+  
+    // Remove any existing HTML comments in the serialized SVG
+    let withoutComments = svgData.replace(/<!--[\s\S]*?-->/g, '');
+  
+    // Remove remaining comments (if any) and Angular's auto-generated attributes used for styling/view encapsulation
+    let res = withoutComments
+      .replace(/<!--[\s\S]*?-->/g, '') // Remove HTML comments again if needed
+      .replace(/\s+_ngcontent-[^="]*=""/g, '') // Remove _ngcontent attributes
+      .replace(/\s+_nghost-[^="]*=""/g, '');    // Remove _nghost attributes
+  
+    // Perform any additional custom processing on the cleaned SVG string
+    let svg2 = processSVG(res);
+  
+    // Optionally format the processed SVG string for readability or standardization
+    let svg3 = formatSVG(svg2);
+  
+    // Create a new Blob object containing the final SVG string
     const blob = new Blob([svg3], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
 
+    // get the current SvgText and update it
+    var svgText : gongsvg.SvgText | undefined
+    for (let svtText_ of this.gongsvgFrontRepo!.array_SvgTexts) {
+      svgText = svtText_
+    }
+
+    if (svgText != undefined) {
+      svgText.Text = svg3
+      this.svgTextService.updateFront( svgText, this.GONG__StackPath).subscribe(
+        () => {
+          console.log("svgText updated")
+        }
+      )
+    }
+  
+    // Generate a temporary URL that points to the Blob
+    const url = URL.createObjectURL(blob);
+  
+    // Create a temporary link element
     const link = document.createElement('a');
     link.href = url;
+  
+    // Provide a default filename for the download
     link.download = this.svg.Name + ".svg";
+  
+    // Append the link to the document body, trigger the download, and clean up
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  
+    // Revoke the object URL to free up resources
     URL.revokeObjectURL(url);
   }
+  
 
 }

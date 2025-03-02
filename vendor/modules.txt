@@ -1,4 +1,4 @@
-# github.com/bytedance/sonic v1.12.8
+# github.com/bytedance/sonic v1.12.10
 ## explicit; go 1.17
 github.com/bytedance/sonic
 github.com/bytedance/sonic/ast
@@ -52,7 +52,7 @@ github.com/dustin/go-humanize
 # github.com/frankban/quicktest v1.14.6
 ## explicit; go 1.13
 github.com/frankban/quicktest
-# github.com/fullstack-lang/gong v0.0.0-20250211024906-f8c6d226247a
+# github.com/fullstack-lang/gong v0.0.0-20250302095600-60b13c1baa65
 ## explicit; go 1.23.1
 github.com/fullstack-lang/gong/go/controllers
 github.com/fullstack-lang/gong/go/db
@@ -60,8 +60,8 @@ github.com/fullstack-lang/gong/go/fullstack
 github.com/fullstack-lang/gong/go/ignore
 github.com/fullstack-lang/gong/go/models
 github.com/fullstack-lang/gong/go/orm
-github.com/fullstack-lang/gong/ng-github.com-fullstack-lang-gong/projects
-# github.com/fullstack-lang/gongdoc v0.0.0-20250211024906-c106082b54b4
+github.com/fullstack-lang/gong/ng-github.com-fullstack-lang-gong
+# github.com/fullstack-lang/gongdoc v0.0.0-20250228023044-07930fd17979
 ## explicit; go 1.23.1
 github.com/fullstack-lang/gongdoc/go/adapter
 github.com/fullstack-lang/gongdoc/go/controllers
@@ -72,24 +72,24 @@ github.com/fullstack-lang/gongdoc/go/fullstack
 github.com/fullstack-lang/gongdoc/go/load
 github.com/fullstack-lang/gongdoc/go/models
 github.com/fullstack-lang/gongdoc/go/orm
-github.com/fullstack-lang/gongdoc/ng-github.com-fullstack-lang-gongdoc/projects
-# github.com/fullstack-lang/gongsvg v0.0.0-20250214092637-8f5c0c1345be
+github.com/fullstack-lang/gongdoc/ng-github.com-fullstack-lang-gongdoc
+# github.com/fullstack-lang/gongsvg v0.0.0-20250228023049-bb49bd65c7c6
 ## explicit; go 1.23.1
 github.com/fullstack-lang/gongsvg/go/controllers
 github.com/fullstack-lang/gongsvg/go/db
 github.com/fullstack-lang/gongsvg/go/fullstack
 github.com/fullstack-lang/gongsvg/go/models
 github.com/fullstack-lang/gongsvg/go/orm
-github.com/fullstack-lang/gongsvg/ng-github.com-fullstack-lang-gongsvg/projects
-# github.com/fullstack-lang/gongtable v0.0.0-20250211024907-6cd6fe50e09c
+github.com/fullstack-lang/gongsvg/ng-github.com-fullstack-lang-gongsvg
+# github.com/fullstack-lang/gongtable v0.0.0-20250228023050-cc13aa50af79
 ## explicit; go 1.23.1
 github.com/fullstack-lang/gongtable/go/controllers
 github.com/fullstack-lang/gongtable/go/db
 github.com/fullstack-lang/gongtable/go/fullstack
 github.com/fullstack-lang/gongtable/go/models
 github.com/fullstack-lang/gongtable/go/orm
-github.com/fullstack-lang/gongtable/ng-github.com-fullstack-lang-gongtable/projects
-# github.com/fullstack-lang/gongtree v0.0.0-20250211024555-99c014eeb3a0
+github.com/fullstack-lang/gongtable/ng-github.com-fullstack-lang-gongtable
+# github.com/fullstack-lang/gongtree v0.0.0-20250228023052-f51b21501fb7
 ## explicit; go 1.23.1
 github.com/fullstack-lang/gongtree/go/buttons
 github.com/fullstack-lang/gongtree/go/controllers
@@ -97,7 +97,7 @@ github.com/fullstack-lang/gongtree/go/db
 github.com/fullstack-lang/gongtree/go/fullstack
 github.com/fullstack-lang/gongtree/go/models
 github.com/fullstack-lang/gongtree/go/orm
-github.com/fullstack-lang/gongtree/ng-github.com-fullstack-lang-gongtree/projects
+github.com/fullstack-lang/gongtree/ng-github.com-fullstack-lang-gongtree
 # github.com/fullstack-lang/maticons v0.0.0-20240913013021-27a7b8fd9369
 ## explicit; go 1.23.1
 github.com/fullstack-lang/maticons/maticons
@@ -136,7 +136,7 @@ github.com/go-playground/locales/currency
 # github.com/go-playground/universal-translator v0.18.1
 ## explicit; go 1.18
 github.com/go-playground/universal-translator
-# github.com/go-playground/validator/v10 v10.24.0
+# github.com/go-playground/validator/v10 v10.25.0
 ## explicit; go 1.20
 github.com/go-playground/validator/v10
 # github.com/goccy/go-json v0.10.5
@@ -153,8 +153,8 @@ github.com/goccy/go-json/internal/runtime
 # github.com/google/btree v1.1.3
 ## explicit; go 1.18
 github.com/google/btree
-# github.com/google/go-cmp v0.6.0
-## explicit; go 1.13
+# github.com/google/go-cmp v0.7.0
+## explicit; go 1.21
 github.com/google/go-cmp/cmp
 github.com/google/go-cmp/cmp/cmpopts
 github.com/google/go-cmp/cmp/internal/diff
@@ -176,8 +176,8 @@ github.com/jinzhu/now
 # github.com/json-iterator/go v1.1.12
 ## explicit; go 1.12
 github.com/json-iterator/go
-# github.com/klauspost/cpuid/v2 v2.2.9
-## explicit; go 1.20
+# github.com/klauspost/cpuid/v2 v2.2.10
+## explicit; go 1.22
 github.com/klauspost/cpuid/v2
 # github.com/kr/pretty v0.3.1
 ## explicit; go 1.12
@@ -226,13 +226,13 @@ github.com/richardlehane/msoleps/types
 # github.com/rogpeppe/fastuuid v1.2.0
 ## explicit; go 1.12
 github.com/rogpeppe/fastuuid
-# github.com/rogpeppe/go-internal v1.13.1
-## explicit; go 1.22
+# github.com/rogpeppe/go-internal v1.14.1
+## explicit; go 1.23
 github.com/rogpeppe/go-internal/fmtsort
 # github.com/shabbyrobe/xmlwriter v0.0.0-20230525083848-85336ec334fa
 ## explicit; go 1.13
 github.com/shabbyrobe/xmlwriter
-# github.com/tealeg/xlsx/v3 v3.3.11
+# github.com/tealeg/xlsx/v3 v3.3.12
 ## explicit; go 1.18
 github.com/tealeg/xlsx/v3
 # github.com/twitchyliquid64/golang-asm v0.15.1
@@ -257,25 +257,25 @@ github.com/twitchyliquid64/golang-asm/unsafeheader
 # github.com/ugorji/go/codec v1.2.12
 ## explicit; go 1.11
 github.com/ugorji/go/codec
-# github.com/xuri/efp v0.0.0-20241211021726-c4e992084aa6
+# github.com/xuri/efp v0.0.0-20250227110027-3491fafc2b79
 ## explicit; go 1.11
 github.com/xuri/efp
 # github.com/xuri/excelize/v2 v2.9.0
 ## explicit; go 1.18
 github.com/xuri/excelize/v2
-# github.com/xuri/nfp v0.0.0-20250111060730-82a408b9aa71
+# github.com/xuri/nfp v0.0.0-20250226145837-86d5fc24b2ba
 ## explicit; go 1.15
 github.com/xuri/nfp
 # golang.org/x/arch v0.14.0
 ## explicit; go 1.18
 golang.org/x/arch/x86/x86asm
-# golang.org/x/crypto v0.33.0
-## explicit; go 1.20
+# golang.org/x/crypto v0.35.0
+## explicit; go 1.23.0
 golang.org/x/crypto/md4
 golang.org/x/crypto/ripemd160
 golang.org/x/crypto/sha3
-# golang.org/x/exp v0.0.0-20250210185358-939b2ce775ac
-## explicit; go 1.22.0
+# golang.org/x/exp v0.0.0-20250228200357-dead58393ab7
+## explicit; go 1.23.0
 golang.org/x/exp/constraints
 # golang.org/x/mod v0.23.0
 ## explicit; go 1.22.0
@@ -391,6 +391,6 @@ modernc.org/mathutil
 # modernc.org/memory v1.8.2
 ## explicit; go 1.21
 modernc.org/memory
-# modernc.org/sqlite v1.35.0
+# modernc.org/sqlite v1.36.0
 ## explicit; go 1.21
 modernc.org/sqlite/lib

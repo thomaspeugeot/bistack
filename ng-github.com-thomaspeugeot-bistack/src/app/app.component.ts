@@ -17,38 +17,22 @@ import * as otherstack from '../../../otherstack/ng-github.com-thomaspeugeot-bis
 import { BistackspecificComponent } from '../../projects/bistackspecific/src/public-api'
 import { OtherstackspecificComponent } from '../../../otherstack/ng-github.com-thomaspeugeot-bistack-otherstack/projects/otherstackspecific/src/public-api'
 
-import { TreeComponent } from '@vendored_components/github.com/fullstack-lang/gongtree/ng-github.com-fullstack-lang-gongtree/projects/gongtreespecific/src/public-api'
-import { MaterialTableComponent } from '@vendored_components/github.com/fullstack-lang/gongtable/ng-github.com-fullstack-lang-gongtable/projects/gongtablespecific/src/lib/material-table/material-table.component';
-import { MaterialFormComponent } from '@vendored_components/github.com/fullstack-lang/gongtable/ng-github.com-fullstack-lang-gongtable/projects/gongtablespecific/src/lib/material-form/material-form.component';
 import * as gongtable from '@vendored_components/github.com/fullstack-lang/gongtable/ng-github.com-fullstack-lang-gongtable/projects/gongtable/src/public-api';
-import { PanelComponent } from '@vendored_components/github.com/fullstack-lang/gongdoc/ng-github.com-fullstack-lang-gongdoc/projects/gongdocspecific/src/public-api'
-import { GongsvgDiagrammingComponent } from '@vendored_components/github.com/fullstack-lang/gongsvg/ng-github.com-fullstack-lang-gongsvg/projects/gongsvgspecific/src/lib/gongsvg-diagramming/gongsvg-diagramming'
 
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [
-
-    CommonModule,
-    FormsModule,
-
-    MatRadioModule,
-    MatButtonModule,
-    MatIconModule,
-
-    AngularSplitModule,
-
-    TreeComponent,
-    MaterialTableComponent,
-    MaterialFormComponent,
-    PanelComponent,
-
-    BistackspecificComponent,
-    OtherstackspecificComponent,
-  ],
-
-  templateUrl: './app.component.html',
+    selector: 'app-root',
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatRadioModule,
+        MatButtonModule,
+        MatIconModule,
+        AngularSplitModule,
+        BistackspecificComponent,
+        OtherstackspecificComponent,
+    ],
+    templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
 
